@@ -1,10 +1,10 @@
 #!/bin/bash
 
-c=$(ls -l /var/www/html/ | wc -l)
+c=$(ls -l /var/www/demo/ | wc -l)
 
 if [ $c -gt 0 ]
 then
-  cd /var/www/html
+  cd /var/www/demo
   pm2 delete all
   rm -fr *
   rm -fr .git*
