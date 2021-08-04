@@ -1,0 +1,9 @@
+.Nav_link {
+    color: rgb(156, 156, 156);
+    font-size: 1rem;
+    line-height: 1rem;
+    text-decoration: none;
+  }
+.Nav_link:hover{
+    color: rgb(156, 156, 156);
+}
