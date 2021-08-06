@@ -1,1 +1,1 @@
-{"deployment_type": "node", "port_number": 5000, "file_name": "server.js"}
+{"deployment_type": "node", "port_number": 5000, "server_name":"abc.com" ,"file_name": "server.js"}
