@@ -42,7 +42,7 @@ do
 done
 pm2 save --force
 cd /var/www/demo
-arr1=(./*/)
+arr2=(./*/)
 	for(( i=0; i<$total; i++ ))
 	do
 		if [ -f "${arr1[$i]}/deploy.json" ]
@@ -52,14 +52,14 @@ arr1=(./*/)
 			then
 				echo "File Exist"
 			else
-				sudo touch /etc/nginx/sites-available/${arr1[$i]}.conf 
+				sudo touch /etc/nginx/sites-available/${arr2[$i]}.conf 
 				if [ $type == react ]
     				then
        				portno=`jq -r .port_number ${arr1[$i]}/deploy.json`
 				servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
 				servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
 				cd ${arr1[$i]} 
-        			sudo tee -a  /etc/nginx/sites-available/${arr1[$i]}.conf >/dev/null << EOF
+        			sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
         			server {
 				listen 80;
 				listen [::]:80;
@@ -91,7 +91,7 @@ EOF
 			servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
 			servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
 			cd ${arr1[$i]}
-			sudo tee -a  /etc/nginx/sites-available/${arr1[$i]}.conf >/dev/null << EOF
+			sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
         		server {
 			listen 80;
 			listen [::]:80;
@@ -120,7 +120,7 @@ EOF
         then
             servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
 		servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
-            sudo tee -a  /etc/nginx/sites-available/${arr1[$i]}.conf >/dev/null << EOF
+            sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
         		server {
 			listen 80;
 			listen [::]:80;
