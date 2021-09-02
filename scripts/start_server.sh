@@ -48,13 +48,12 @@ for i in "${a1[@]}"
 do
         temp=${i:2:-1}
         arr2=(${arr2[@]} $temp)
-
 done
 	for(( i=0; i<$total; i++ ))
 	do
 		if [ -f "${arr1[$i]}/deploy.json" ]
 		then
-		type=`jq -r .deployment_type ${arr1[$i]}/deploy.json`
+			type=`jq -r .deployment_type ${arr1[$i]}/deploy.json`
 			if [ -f /etc/nginx/sites-available/${arr1[$i]}.conf ]
 			then
 				echo "File Exist"
@@ -62,99 +61,99 @@ done
 				sudo touch /etc/nginx/sites-available/${arr2[$i]}.conf 
 				if [ $type == react ]
     				then
-       				portno=`jq -r .port_number ${arr1[$i]}/deploy.json`
+       					portno=`jq -r .port_number ${arr1[$i]}/deploy.json`
+					servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
+					servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
+					cd ${arr1[$i]} 
+        				sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
+        				server {
+						listen 80;
+						listen [::]:80;
+
+            					root /var/www/demo;
+
+						server_name $servname;
+						location / {
+                    				proxy_pass http://127.0.0.1:$portno/;
+						}
+					}
+        				server {
+						listen 443;
+						listen [::]:443;
+
+           					root var/www/demo;
+
+						server_name $servname; 
+					location / {
+                        			proxy_pass http://127.0.0.1:$portno/;
+						}
+					}               
+EOF
+        			cd
+        			elif [ $type == node ]
+        			then
+           			filename=`jq -r .file_name ${arr1[$i]}/deploy.json`
+				nportno=`jq -r .port_number ${arr1[$i]}/deploy.json`
 				servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
 				servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
-				cd ${arr1[$i]} 
-        			sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
+				cd ${arr1[$i]}
+				sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
         			server {
-				listen 80;
-				listen [::]:80;
+					listen 80;
+					listen [::]:80;
 
-            			root /var/www/demo;
+            				root /var/www/demo;
 
-				server_name $servname;
-				location / {
-                    		proxy_pass http://127.0.0.1:$portno/;
-				}
+					server_name $servname;
+					location / {
+                    				proxy_pass http://127.0.0.1:$portno/;
+					}
 				}
         			server {
-				listen 443;
-				listen [::]:443;
+					listen 443;
+					listen [::]:443;
 
-           			root var/www/demo;
+           				root /var/www/demo;
 
-				server_name $servname; 
-				location / {
-                        proxy_pass http://127.0.0.1:$portno/;
-				}
-			}               
+					server_name $servname; 
+					location / {
+                        			proxy_pass http://127.0.0.1:$portno/;
+					}
+				}               
 EOF
-        		cd
-        elif [ $type == node ]
-        then
-           filename=`jq -r .file_name ${arr1[$i]}/deploy.json`
-			nportno=`jq -r .port_number ${arr1[$i]}/deploy.json`
-			servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
-			servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
-			cd ${arr1[$i]}
-			sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
-        		server {
-			listen 80;
-			listen [::]:80;
+        			cd
+        			elif [ $type == html ]
+        			then
+            				servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
+					servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
+            				sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
+        				server {
+						listen 80;
+						listen [::]:80;
 
-            		root /var/www/demo;
+            					root /var/www/demo;
 
-			server_name $servname;
-			location / {
-                    		proxy_pass http://127.0.0.1:$portno/;
-				}
-			}
-        		server {
-			listen 443;
-			listen [::]:443;
+						server_name $servname;
+						location / {
+                    					proxy_pass http://127.0.0.1:$portno/;
+						}
+					}
+        				server {
+						listen 443;
+						listen [::]:443;
 
-           		root /var/www/demo;
+           					root /var/www/demo;
 
-			server_name $servname; 
-			location / {
-                        proxy_pass http://127.0.0.1:$portno/;
-				}
-			}               
+						server_name $servname; 
+						location / {
+                        				proxy_pass http://127.0.0.1:$portno/;
+						}
+					}               
 EOF
-        cd
-        elif [ $type == html ]
-        then
-            servname=`jq -r .server_name ${arr1[$i]}/deploy.json`
-		servalias=`jq -r .server_alias ${arr1[$i]}/deploy.json`
-            sudo tee -a  /etc/nginx/sites-available/${arr2[$i]}.conf >/dev/null << EOF
-        		server {
-			listen 80;
-			listen [::]:80;
-
-            		root /var/www/demo;
-
-			server_name $servname;
-			location / {
-                    		proxy_pass http://127.0.0.1:$portno/;
-				}
-			}
-        		server {
-			listen 443;
-			listen [::]:443;
-
-           		root /var/www/demo;
-
-			server_name $servname; 
-			location / {
-                        proxy_pass http://127.0.0.1:$portno/;
-				}
-			}               
-EOF
+			fi
 		fi
 	fi
-fi
-	done
+done
 
 ##uncomment to check for changing the directory
 systemctl restart nginx
