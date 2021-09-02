@@ -24,9 +24,9 @@ do
 
             		root /var/www/demo;
 
-			server_name \$servname;
+			server_name $servname;
 			location / {
-                    		proxy_pass http://127.0.0.1:\$portno/;
+                    		proxy_pass http://127.0.0.1:$portno/;
 				}
 			}
         		server {
@@ -35,9 +35,9 @@ do
 
            		root /var/www/demo;
 
-			server_name \$servname; 
+			server_name $servname; 
 			location / {
-                        proxy_pass http://127.0.0.1:\$portno/;
+                        proxy_pass http://127.0.0.1:$portno/;
 				}
 			}               
 EOF
@@ -58,9 +58,9 @@ EOF
 
             		root /var/www/demo;
 
-			server_name \$servname;
+			server_name $servname;
 			location / {
-                    		proxy_pass http://127.0.0.1:\$portno/;
+                    		proxy_pass http://127.0.0.1:$portno/;
 				}
 			}
         		server {
@@ -69,9 +69,9 @@ EOF
 
            		root /var/www/demo;
 
-			server_name \$servname; 
+			server_name $servname; 
 			location / {
-                        proxy_pass http://127.0.0.1:\$portno/;
+                        proxy_pass http://127.0.0.1:$portno/;
 				}
 			}               
 EOF
@@ -87,9 +87,9 @@ EOF
 
             		root /var/www/demo;
 
-			server_name \$servname;
+			server_name $servname;
 			location / {
-                    		proxy_pass http://127.0.0.1:\$portno/;
+                    		proxy_pass http://127.0.0.1:$portno/;
 				}
 			}
         		server {
@@ -98,9 +98,9 @@ EOF
 
            		root /var/www/demo;
 
-			server_name \$servname; 
+			server_name $servname; 
 			location / {
-                        proxy_pass http://127.0.0.1:\$portno/;
+                        proxy_pass http://127.0.0.1:$portno/;
 				}
 			}               
 EOF
