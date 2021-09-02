@@ -42,7 +42,14 @@ do
 done
 pm2 save --force
 cd /var/www/demo
-arr2=(./*/)
+a1=(./*/)
+arr2=()
+for i in "${a1[@]}"
+do
+        temp=${i:2:-1}
+        arr2=(${arr2[@]} $temp)
+
+done
 	for(( i=0; i<$total; i++ ))
 	do
 		if [ -f "${arr1[$i]}/deploy.json" ]
