@@ -41,6 +41,8 @@ do
 	fi
 done
 pm2 save --force
+cd /var/www/demo
+arr1=(./*/)
 	for(( i=0; i<$total; i++ ))
 	do
 		if [ -f "${arr1[$i]}/deploy.json" ]
